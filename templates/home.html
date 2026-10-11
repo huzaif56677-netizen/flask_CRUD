@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Home
+{% endblock %}
+ 
+{% block content %}
+
+
+<h1>Registered Users</h1>
+<div class="logout-div"><a class="logout-a" href="{{ url_for('logout') }}">Logout</a>
+</div>
+<table>
+
+    <tr>
+
+        <th>ID</th>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Age</th>
+        <th>Created At</th>
+       
+    </tr>
+
+    {% for user in users %}
+
+    <tr>
+        <td>{{ user.id }}</td>
+        <td>{{ user.username }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.age }}</td>
+        <td>{{ user.created_at }}</td>
+        <td>
+            <div class="two-buttons-div">
+            <a href="{{ url_for('update',id=user.id)}}">Update</a>
+
+            <form action="{{ url_for('delete',id=user.id) }}" method="POST"><button class="del-btn" type="submit">Delete</button></form>
+            </div>
+        </td>
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+<a href="{{ url_for('add_user') }}" class="add_user-a">
+    Add New User
+</a>
+
+
+<h2>Filter by Age</h2>
+<form method="POST" action="{{ url_for('filter')}}">
+    <label for="filter">Based on Age: </label>
+    <select id="filter" name="filter">
+        <option value="nofilter">no filter</option>
+        <option value="lessthan">less 18</option>
+        <option value="greaterthan">>=18</option>    
+    </select>
+    <br>
+
+    <div class="filter-btn-wrapper">
+    <button class="filter-btn" type="submit">Filter</button>
+</div>
+
+</form>
+
+
+{% if filtered_users %}
+<table>
+
+    <tr>
+
+        <th>ID</th>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Age</th>
+        <th>Created At</th>
+       
+    </tr>
+    {% for user in  filtered_users%}
+    <tr>
+        
+        <td>{{ user.id }}</td>
+        <td>{{ user.username }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.age }}</td>
+        <td>{{ user.created_at }}</td>
+        
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+
+{% endblock %}
+
